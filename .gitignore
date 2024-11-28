@@ -29,3 +29,4 @@ lib/forge-std
 /src/practice/vesting/artifacts/build-info
 /src/practice/nft/artifacts/build-info
 /src/practice/nft/artifacts
+foundry.toml
