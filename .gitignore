@@ -12,3 +12,20 @@ docs/
 
 # Dotenv file
 .env
+lib/forge-std
+.deps/npm/forge-std/Test.sol
+.deps/npm/forge-std/console.sol
+/script/artifacts
+/src/artifacts
+/src/practice/vesting/artifacts
+/src/practice/vesting/artifacts/build-info
+/src/practice/vesting/artifacts
+/test/practice/nft/artifacts
+/test/artifacts
+/src/practice/vesting/artifacts
+/src/practice/vesting/artifacts
+/src/practice/vesting/artifacts
+/src/practice/vesting/artifacts/build-info
+/src/practice/vesting/artifacts/build-info
+/src/practice/nft/artifacts/build-info
+/src/practice/nft/artifacts
