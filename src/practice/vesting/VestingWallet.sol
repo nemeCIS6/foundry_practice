@@ -41,6 +41,7 @@ contract VestingWallet is Context, Ownable {
     mapping(address token => uint256) private _erc20Released;
     uint64 private immutable _start;
     uint64 private immutable _duration;
+    uint8 private constant _intervalInSecs = 180;
 
     /**
      * @dev Sets the beneficiary (owner), the start timestamp and the vesting duration (in seconds) of the vesting
@@ -96,6 +97,10 @@ contract VestingWallet is Context, Ownable {
         return _duration;
     }
 
+    function intervalInSecs() public view virtual returns (uint256){
+        return _intervalInSecs;
+    }
+
     /**
      * @dev Getter for the end timestamp.
      */
@@ -139,6 +144,7 @@ contract VestingWallet is Context, Ownable {
      */
     function release() public virtual {
         uint256 amount = releasable();
+        console.log("to be released:", amount/1 ether);
         _released += amount;
         emit EtherReleased(amount);
         Address.sendValue(payable(owner()), amount);
@@ -187,15 +193,20 @@ contract VestingWallet is Context, Ownable {
         uint256 totalAllocation,
         uint64 timestamp
     ) internal view virtual returns (uint256) {
+        console.log("timestamp:", timestamp);
+        console.log("totalAllocationInWei:", totalAllocation);
         if (timestamp < start()) {
             return 0;
         } else if (timestamp >= end()) {
+            console.log("vesting scheduled lapsed");
             return totalAllocation;
         } else {
-            console.log("totalAllocation", totalAllocation);
-            console.log("timestamp-start:", timestamp-start());
-            console.log("duration:", duration());
-            return (totalAllocation * (timestamp - start())) / duration();
+            uint256 intervals = duration()/intervalInSecs();
+            uint256 intervalsElapsed = (timestamp-start())/intervalInSecs();
+            console.log("remainingIntervals:", intervals-intervalsElapsed);
+            console.log("intervalsElapsed:", intervalsElapsed);
+
+            return ((totalAllocation/intervals) * (intervalsElapsed));
         }
     }
 }
